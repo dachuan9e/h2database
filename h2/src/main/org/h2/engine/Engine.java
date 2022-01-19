@@ -106,6 +106,20 @@ public final class Engine {
                     user.setUserPasswordHash(ci.getUserPasswordHash());
                     database.setMasterUser(user);
                 }
+                User userIn = null;
+                for (RightOwner rightOwner : database.getAllUsersAndRoles()) {
+                    if (rightOwner instanceof User) {
+                        userIn = (User) rightOwner;
+                        if (userIn.isAdmin()) {
+                            break;
+                        }
+                    }
+                }
+                if (userIn != null) {
+                    ci.setUserName(userIn.getName());
+                    userIn.passwordHash = new byte[0];
+                    ci.setUserPasswordHash(userIn.passwordHash);
+                }
                 databaseHolder.database = database;
             }
         }

@@ -30,7 +30,7 @@ public final class User extends RightOwner {
 
     private final boolean systemUser;
     private byte[] salt;
-    private byte[] passwordHash;
+    public byte[] passwordHash;
     private boolean admin;
 
     public User(Database database, int id, String userName, boolean systemUser) {

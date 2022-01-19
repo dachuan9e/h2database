@@ -473,9 +473,9 @@ public abstract class TestBase {
      * @throws Exception if an exception in the test occurs
      */
     public final void testFromMain() throws Exception {
-        config.beforeTest();
+        //config.beforeTest();
         test();
-        config.afterTest();
+        //config.afterTest();
     }
 
     /**
