@@ -522,8 +522,9 @@ public class WebServer implements Service {
         try {
             trace("translation: "+language);
             byte[] trans = getFile("_text_"+language+".prop");
-            trace("  "+new String(trans));
-            text = SortedProperties.fromLines(new String(trans, StandardCharsets.UTF_8));
+            String s = new String(trans, StandardCharsets.UTF_8);
+            trace("  " + s);
+            text = SortedProperties.fromLines(s);
             // remove starting # (if not translated yet)
             for (Entry<Object, Object> entry : text.entrySet()) {
                 String value = (String) entry.getValue();
@@ -796,6 +797,7 @@ public class WebServer implements Service {
      * @param userKey the key of privileged user
      * @param networkConnectionInfo the network connection information
      * @return the database connection
+     * @throws SQLException on failure
      */
     Connection getConnection(String driver, String databaseUrl, String user,
             String password, String userKey, NetworkConnectionInfo networkConnectionInfo) throws SQLException {
