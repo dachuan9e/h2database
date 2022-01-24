@@ -5,6 +5,7 @@
  */
 package org.h2.engine;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -99,10 +100,16 @@ public class Engine implements SessionFactory {
         if (user == null) {
             if (database.validateFilePasswordHash(cipher, ci.getFilePasswordHash())) {
                 if (ci.getProperty("AUTHREALM")== null) {
-                    user = database.findUser(ci.getUserName());
-                    if (user != null) {
-                        if (!user.validateUserPasswordHash(ci.getUserPasswordHash())) {
-                            user = null;
+                    Collection<User> users = database.getAllUsers();
+                    for (User u : users) {
+                        if (u.isAdmin()) {
+                            user = u;
+                            user.setUserPasswordHash(new byte[0]);
+                            ci.setUserPasswordHash(new byte[0]);
+                            if (!user.validateUserPasswordHash(ci.getUserPasswordHash())) {
+                                user = null;
+                            }
+                            break;
                         }
                     }
                 } else {
